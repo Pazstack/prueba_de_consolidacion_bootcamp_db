@@ -1,25 +1,23 @@
 const express = require('express');
 const db = require('./models'); 
 const bodyParser = require('body-parser');
-const bcrypt = require('bcrypt'); 
+const bcrypt = require('bcrypt');
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Probar la conexión a la base de datos
 db.sequelize.authenticate()
     .then(async () => {
         console.log('Conexión a la base de datos establecida con éxito.');
-        await db.sequelize.sync(); 
+        await db.sequelize.sync();
     })
     .catch(err => {
         console.error('No se pudo conectar a la base de datos:', err);
     });
 
-// Ruta para la raíz
 app.get('/', (req, res) => {
     res.send('¡Hola! El servidor está funcionando :).');
 });
@@ -27,8 +25,8 @@ app.get('/', (req, res) => {
 // Ruta para obtener todos los usuarios
 app.get('/users', async (req, res) => {
     try {
-        const users = await db.users.findAll(); 
-        res.json(users); 
+        const users = await db.users.findAll();
+        res.json(users);
     } catch (error) {
         console.error('Error al obtener los usuarios:', error);
         res.status(500).json({ error: 'Error al obtener los usuarios', details: error.message });
@@ -37,8 +35,6 @@ app.get('/users', async (req, res) => {
 
 // Ruta para crear usuarios
 app.post('/create-users', async (req, res) => {
-    console.log('Solicitud POST recibida en /create-users'); // Línea de registro para depuración
-
     const users = [
         { firstName: 'Mateo', lastName: 'Díaz', email: 'mateo.diaz@correo.com', password: await bcrypt.hash('contraseña1', 10) },
         { firstName: 'Santiago', lastName: 'Mejías', email: 'santiago.mejias@correo.com', password: await bcrypt.hash('contraseña2', 10) },
@@ -57,25 +53,23 @@ app.post('/create-users', async (req, res) => {
     }
 });
 
-// Ruta para crear Bootcamps
+// Ruta para crear bootcamps
 app.post('/create-bootcamps', async (req, res) => {
-    console.log('Solicitud POST recibida en /create-bootcamps'); // x2
-
     const bootcamps = [
         {
-            title: 'Introduciendo El Bootcamp De React.',
+            title: 'Introducción a React',
             cue: 10,
             description: 'React es la librería más usada en JavaScript para el desarrollo de interfaces.'
         },
         {
-            title: 'Bootcamp Desarrollo Web Full Stack.',
+            title: 'Desarrollo Web Full Stack',
             cue: 12,
-            description: 'Crearás aplicaciones web utilizando las tecnologías y lenguajes más actuales y populares, como: JavaScript, nodeJS, Angular, MongoDB, ExpressJS.'
+            description: 'Crearás aplicaciones web con JavaScript, nodeJS, Angular, MongoDB, ExpressJS.'
         },
         {
-            title: 'Bootcamp Big Data, Inteligencia Artificial & Machine Learning.',
+            title: 'Big Data e IA',
             cue: 18,
-            description: 'Domina Data Science, y todo el ecosistema de lenguajes y herramientas de Big Data, e intégralos con modelos avanzados de Artificial Intelligence y Machine Learning.'
+            description: 'Domina Data Science, y todo el ecosistema de lenguajes y herramientas de Big Data.'
         }
     ];
 
@@ -90,7 +84,17 @@ app.post('/create-bootcamps', async (req, res) => {
     }
 });
 
-// Iniciar el servidor
+// Añadir esta ruta para obtener los bootcamps
+app.get('/bootcamps', async (req, res) => {
+    try {
+        const bootcamps = await db.bootcamps.findAll(); // Obtiene todos los bootcamps
+        res.json(bootcamps); // Envía la lista de bootcamps como respuesta
+    } catch (error) {
+        console.error('Error al obtener los bootcamps:', error);
+        res.status(500).json({ error: 'Error al obtener los bootcamps', details: error.message });
+    }
+});
+
 app.listen(PORT, () => {
     console.log(`Servidor escuchando en el puerto ${PORT}.`);
 });
