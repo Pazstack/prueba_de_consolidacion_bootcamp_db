@@ -1,26 +1,28 @@
-module.exports = (sequelize, Sequelize) => {
-    const User = sequelize.define("user", {
-        firstName: {
-            type: Sequelize.STRING,
-            allowNull: false
-        },
-        lastName: {
-            type: Sequelize.STRING,
-            allowNull: false
-        },
-        email: {
-            type: Sequelize.STRING,
-            allowNull: false,
-            unique: true,
-            validate: {
-                isEmail: true
-            }
-        },
-        password: { 
-            type: Sequelize.STRING,
-            allowNull: false
-        }
-    });
+'use strict';
 
-    return User;
+/** @type {import('sequelize-cli').Model} */
+module.exports = (sequelize, DataTypes) => {
+  const User = sequelize.define('User', {
+    firstName: {
+      type: DataTypes.STRING,
+      allowNull: false, 
+    },
+    lastName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false, 
+      unique: true, 
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false, 
+    },
+  }, {
+    tableName: 'users', 
+  });
+
+  return User;
 };

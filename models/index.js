@@ -13,10 +13,11 @@ db.sequelize = sequelize;
 
 // Importar modelo de usuario
 db.users = require('./user.model.js')(sequelize, Sequelize);
+
 // Importar modelo de bootcamp
 db.bootcamps = require('./bootcamp.model.js')(sequelize, Sequelize);
 
-// Define relaciones
+// Relación muchos a muchos entre usuarios y bootcamps
 db.users.belongsToMany(db.bootcamps, { through: "user_bootcamps" });
 db.bootcamps.belongsToMany(db.users, { through: "user_bootcamps" });
 

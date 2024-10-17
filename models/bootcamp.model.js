@@ -1,23 +1,22 @@
-module.exports = (sequelize, Sequelize) => {
-    const Bootcamp = sequelize.define("bootcamp", {
-      title: {
-        type: Sequelize.STRING,
-        allowNull: false
-      },
-      cue: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        validate: {
-          min: 5,
-          max: 10
-        }
-      },
-      description: {
-        type: Sequelize.STRING,
-        allowNull: false
+module.exports = (sequelize, Sequelize) => { 
+  const Bootcamp = sequelize.define("bootcamp", {
+    title: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    cue: {
+      type: Sequelize.INTEGER,
+      allowNull: false,
+      validate: {
+        min: 25, 
+        max: 35 
       }
-    });
-  
-    return Bootcamp;
-  };
-  
+    },
+    description: {
+      type: Sequelize.STRING,
+      allowNull: false
+    }
+  });
+
+  return Bootcamp;
+};
